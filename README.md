@@ -20,7 +20,7 @@ Built with:
 ## Live Demo
 
 The API is deployed and publicly accessible at:
-[link text](hospital-readmission-prediction-production.up.railway.app/docs)
+[Live API](hospital-readmission-prediction-production.up.railway.app/docs)
 
 Try the `/predict` endpoint with the sample payloads 
 in the `examples/` folder.
