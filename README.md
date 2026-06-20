@@ -15,3 +15,12 @@ Built with:
   - **Gemini LLM-powered clinical summaries**
   - **Containerized with Docker**
   - **Deployed on Railway**
+
+
+## Live Demo
+
+The API is deployed and publicly accessible at:
+[link text](hospital-readmission-prediction-production.up.railway.app/docs)
+
+Try the `/predict` endpoint with the sample payloads 
+in the `examples/` folder.
