@@ -2,7 +2,7 @@
 FROM python:3.12-slim
 
 # Set workng directory
-WORKDIR /app/src
+WORKDIR /app
 
 # Copy only the requirements
 COPY requirements.txt .
@@ -12,6 +12,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy all the rest of the code
 COPY . .
+
+# Set workng directory
+WORKDIR /app/src
 
 # Statement about the container's port (no port opens)
 EXPOSE 8000
