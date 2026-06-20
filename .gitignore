@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+.env
+data/
+*.pkl
+!model.pkl
+!encoder.pkl
+*.joblib
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.venv/
+.DS_Store
+test_data.py

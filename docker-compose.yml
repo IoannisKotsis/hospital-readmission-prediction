@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+
+  # 1. Postgres service
+  db:
+    # Which image to install
+    image: postgres:15
+
+    # Settings for Postgres
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+    # Volume directory for saving
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    # Which port to use
+    ports:
+      - 5433:5432
+
+
+  # 2. FastAPI service
+  app:
+    # Build the image base on the dockerfile
+    build: .
+
+    # Which ports to use
+    ports:
+      - 8000:8000
+
+    # Load the .env automaically
+    env_file:
+      - .env
+
+    # Which service to begin first
+    depends_on:
+      - db
+
+    # Current folder is visible inside /app
+    volumes:
+      - .:/app
+
+    # Set the host to db service
+    environment:
+      - DB_HOST=db
+
+  
+# Declare the named volume from above
+volumes:
+  postgres_data:
