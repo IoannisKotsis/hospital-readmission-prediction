@@ -1,4 +1,4 @@
-# Hospital Readmission Prediction
+## Hospital Readmission Prediction
 
 This ML system predicts the risk of hospital readmission for diabetic patients within 30 dyas of discharge.
 
@@ -24,3 +24,29 @@ The API is deployed and publicly accessible at:
 
 Try the `/predict` endpoint with the sample payloads 
 in the `examples/` folder.
+
+
+## Features
+
+- The ML model outputs the predicted probability of readmission and the predicted class (0: No readmission, 1: Readmission in <30 days) using XGBoost.
+- SHAP explainability identifies the key clinical factors driving each prediction, enabling transparent decision-making.
+- The Gemini LLM translates model predictions into human-readable explanations.
+- PostgreSQL logging of all predictions with raw input data for model performance monitoring.
+- RESTful API built with FastAPI, providing a /predict endpoint for real-time inference.
+- Dockerized application with docker-compose for reproducible deployment across any computer environment.
+- Deployed on Railway (PaaS) with a public endpoint accessible to any user.
+
+## Tech Stack
+
+|
+ML Model
+|
+XGBoost
+Randomized Cross-Validation
+
+
+
+
+
+
+
