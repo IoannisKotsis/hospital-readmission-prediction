@@ -38,19 +38,8 @@ in the `examples/` folder.
 
 ## Tech Stack
 
-| ML Model | XGBoost, RandomizedSearchCV, Scikit-learn |
-| Explainability | SHAP |
-| API | FastAPI, Pydantic |
-| Database | PostgreSQL |
-| LLM | Google Gemini |
-| Containerization | Docker, docker-compose |
-| Deployment | Railway (PaaS) |
-| Language | Python |
-
-
-## Model Performance
-
-|
+| Category | Technology |
+|---|---|
 ML MODEL
 |
 XGBoost
@@ -97,6 +86,19 @@ Language
 |
 Python
 |
+
+
+## Model Performance
+
+| Category | Technology |
+|---|---|
+| AUC |  0.6371 |
+| Accuracy | 63.5% |
+| Precision | 13.36% |
+| Recall | 55.44% |
+| F1-Score | 0.21 |
+
+
 
 This dataset is a well-known challenging benchmark in healthcare ML. 
 Published studies report AUC scores between 0.62–0.70 (Strack et al., 2014), 
