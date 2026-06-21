@@ -87,8 +87,9 @@ curl -X POST "https://hospital-readmission-prediction-production.up.railway.app/
 {
   "predicted_probability": 0.80,
   "predicted_class": 1,
-  "llm_summary": "Based on our prediction, this patient has an 80% chance of being readmitted to the hospital within 30 days.
-  This high likelihood is driven by factors such as their advanced age, history of multiple past hospitalizations, and complex health issues,
+  "llm_summary": "Based on our prediction, this patient has an 80% chance of being readmitted
+  to the hospital within 30 days. This high likelihood is driven by factors such as their
+  advanced age, history of multiple past hospitalizations, and complex health issues,
   notably their main diagnosis of congestive heart failure."
 }
 ```
