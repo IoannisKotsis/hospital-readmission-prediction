@@ -83,3 +83,12 @@ Python
 
 ![Alt-text](src/roc_curve.png)
 
+![Alt-text](src/shap_values.png)
+
+AUC:
+Accuracy:
+Precision:
+Recall:
+F1-Score:
+
+
