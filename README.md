@@ -41,21 +41,17 @@ in the `examples/` folder.
 |
 ML Model
 |
-XGBoost
-Randomized Cross-Validation
-Scikit-learn
-Pickle
+XGBoost, RandomizedSearchCV, Scikit-learn
 |
 |
-Explainaility
+Explainability
 |
 SHAP values
 |
 |
 API
 |
-FastAPI
-Pydantic
+FastAPI, Pydantic
 |
 |
 Database
@@ -70,12 +66,18 @@ Google Gemini
 |
 Containerization
 |
-Docker
+Docker, docker-compose
+|
+|
+Deployment
+|
+Railway (PaaS)
 |
 |
 Language
 |
-?
+Python
+|
 
 
 
