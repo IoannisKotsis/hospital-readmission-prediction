@@ -85,10 +85,10 @@ Python
 
 ![Alt-text](src/shap_values.png)
 
-AUC:
-Accuracy:
-Precision:
-Recall:
-F1-Score:
+AUC: 0.63715
+Accuracy: 0.63460
+Precision: 13.3612
+Recall: 55.4410
+F1-Score: 0.21533
 
 
