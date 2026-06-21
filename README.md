@@ -81,3 +81,5 @@ Python
 
 ## Model Performance
 
+![Alt-text](src/roc_curve.png)
+
