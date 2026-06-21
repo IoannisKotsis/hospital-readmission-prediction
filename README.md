@@ -47,7 +47,35 @@ Scikit-learn
 Pickle
 |
 |
-
+Explainaility
+|
+SHAP values
+|
+|
+API
+|
+FastAPI
+Pydantic
+|
+|
+Database
+|
+PostgreSQL
+|
+|
+LLM
+|
+Google Gemini
+|
+|
+Containerization
+|
+Docker
+|
+|
+Language
+|
+?
 
 
 
