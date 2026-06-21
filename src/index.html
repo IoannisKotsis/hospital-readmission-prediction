@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Readmission Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            color: #1a2332;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a365d 0%, #2d4a7a 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a365d;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .field input, .field select {
+            padding: 0.5rem 0.6rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s;
+            background: #fafbfc;
+        }
+
+        .field input:focus, .field select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+
+        .btn-predict {
+            display: block;
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, #1a365d 0%, #2d4a7a 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-predict:hover { opacity: 0.9; }
+        .btn-predict:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .result-card {
+            display: none;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .result-card.low-risk { border-left-color: #10b981; }
+        .result-card.high-risk { border-left-color: #ef4444; }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .risk-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .risk-badge.low { background: #d1fae5; color: #065f46; }
+        .risk-badge.high { background: #fee2e2; color: #991b1b; }
+
+        .probability {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1a365d;
+        }
+
+        .probability span {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #64748b;
+        }
+
+        .summary {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .summary-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.4rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 1rem;
+            color: #64748b;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2.5px solid #e2e8f0;
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .error-msg {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+
+        footer a { color: #3b82f6; text-decoration: none; }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr 1fr; }
+            header h1 { font-size: 1.4rem; }
+            .probability { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Hospital Readmission Predictor</h1>
+    <p>Predict 30-day readmission risk for diabetic patients</p>
+</header>
+
+<div class="container">
+
+    <!-- Demographics -->
+    <div class="card">
+        <h2>Patient Demographics</h2>
+        <div class="grid">
+            <div class="field">
+                <label>Race</label>
+                <select id="race">
+                    <option value="Caucasian">Caucasian</option>
+                    <option value="AfricanAmerican">African American</option>
+                    <option value="Hispanic">Hispanic</option>
+                    <option value="Asian">Asian</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Gender</label>
+                <select id="gender">
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Age</label>
+                <select id="age">
+                    <option value="[0-10)">0-10</option>
+                    <option value="[10-20)">10-20</option>
+                    <option value="[20-30)">20-30</option>
+                    <option value="[30-40)">30-40</option>
+                    <option value="[40-50)">40-50</option>
+                    <option value="[50-60)" selected>50-60</option>
+                    <option value="[60-70)">60-70</option>
+                    <option value="[70-80)">70-80</option>
+                    <option value="[80-90)">80-90</option>
+                    <option value="[90-100)">90-100</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admission Info -->
+    <div class="card">
+        <h2>Admission Details</h2>
+        <div class="grid">
+            <div class="field">
+                <label>Admission Type ID</label>
+                <input type="number" id="admission_type_id" value="1" min="1" max="8">
+            </div>
+            <div class="field">
+                <label>Discharge Disp. ID</label>
+                <input type="number" id="discharge_disposition_id" value="1" min="1" max="28">
+            </div>
+            <div class="field">
+                <label>Admission Source ID</label>
+                <input type="number" id="admission_source_id" value="7" min="1" max="25">
+            </div>
+            <div class="field">
+                <label>Time in Hospital</label>
+                <input type="number" id="time_in_hospital" value="4" min="1" max="14">
+            </div>
+        </div>
+    </div>
+
+    <!-- Clinical -->
+    <div class="card">
+        <h2>Clinical Information</h2>
+        <div class="grid">
+            <div class="field">
+                <label>Lab Procedures</label>
+                <input type="number" id="num_lab_procedures" value="45" min="0">
+            </div>
+            <div class="field">
+                <label>Procedures</label>
+                <input type="number" id="num_procedures" value="1" min="0">
+            </div>
+            <div class="field">
+                <label>Medications</label>
+                <input type="number" id="num_medications" value="13" min="0">
+            </div>
+            <div class="field">
+                <label>Outpatient Visits</label>
+                <input type="number" id="number_outpatient" value="0" min="0">
+            </div>
+            <div class="field">
+                <label>Emergency Visits</label>
+                <input type="number" id="number_emergency" value="0" min="0">
+            </div>
+            <div class="field">
+                <label>Inpatient Visits</label>
+                <input type="number" id="number_inpatient" value="0" min="0">
+            </div>
+            <div class="field">
+                <label>Number of Diagnoses</label>
+                <input type="number" id="number_diagnoses" value="9" min="1">
+            </div>
+        </div>
+    </div>
+
+    <!-- Diagnoses -->
+    <div class="card">
+        <h2>Diagnoses (ICD-9 Codes)</h2>
+        <div class="grid">
+            <div class="field">
+                <label>Primary Diagnosis</label>
+                <input type="text" id="diag_1" value="428" placeholder="e.g. 428">
+            </div>
+            <div class="field">
+                <label>Secondary Diagnosis</label>
+                <input type="text" id="diag_2" value="250" placeholder="e.g. 250">
+            </div>
+            <div class="field">
+                <label>Tertiary Diagnosis</label>
+                <input type="text" id="diag_3" value="486" placeholder="e.g. 486">
+            </div>
+        </div>
+    </div>
+
+    <!-- Medications -->
+    <div class="card">
+        <h2>Medications</h2>
+        <div class="grid">
+            <div class="field">
+                <label>Metformin</label>
+                <select id="metformin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Repaglinide</label>
+                <select id="repaglinide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Nateglinide</label>
+                <select id="nateglinide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Chlorpropamide</label>
+                <select id="chlorpropamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Glimepiride</label>
+                <select id="glimepiride"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Acetohexamide</label>
+                <select id="acetohexamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Glipizide</label>
+                <select id="glipizide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Glyburide</label>
+                <select id="glyburide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Tolbutamide</label>
+                <select id="tolbutamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Pioglitazone</label>
+                <select id="pioglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Rosiglitazone</label>
+                <select id="rosiglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Acarbose</label>
+                <select id="acarbose"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Miglitol</label>
+                <select id="miglitol"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Troglitazone</label>
+                <select id="troglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Tolazamide</label>
+                <select id="tolazamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Examide</label>
+                <select id="examide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Citoglipton</label>
+                <select id="citoglipton"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Insulin</label>
+                <select id="insulin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Glyburide-Metformin</label>
+                <select id="glyburide_metformin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Glipizide-Metformin</label>
+                <select id="glipizide_metformin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Glimepiride-Pioglitazone</label>
+                <select id="glimepiride_pioglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Metformin-Rosiglitazone</label>
+                <select id="metformin_rosiglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+            <div class="field">
+                <label>Metformin-Pioglitazone</label>
+                <select id="metformin_pioglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Treatment -->
+    <div class="card">
+        <h2>Treatment Summary</h2>
+        <div class="grid">
+            <div class="field">
+                <label>Medication Change</label>
+                <select id="med_change">
+                    <option value="Ch">Changed</option>
+                    <option value="No">No Change</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Diabetes Medication</label>
+                <select id="diabetes_med">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Predict Button -->
+    <button class="btn-predict" id="predictBtn" onclick="predict()">
+        Predict Readmission Risk
+    </button>
+
+    <!-- Error -->
+    <div class="error-msg" id="errorMsg"></div>
+
+    <!-- Result -->
+    <div class="card result-card" id="resultCard">
+        <div class="result-header">
+            <div>
+                <div class="probability" id="probValue">--</div>
+                <span style="color: #64748b; font-size: 0.85rem;">readmission probability</span>
+            </div>
+            <div class="risk-badge" id="riskBadge">--</div>
+        </div>
+        <div class="summary-label">Clinical Summary (AI-Generated)</div>
+        <div class="summary" id="summaryText"></div>
+    </div>
+
+</div>
+
+<footer>
+    Built by Ioannis Kotsis &middot; 
+    <a href="/docs">API Documentation</a> &middot;
+    <a href="https://github.com/IoannisKotsis/hospital-readmission-prediction" target="_blank">GitHub</a>
+</footer>
+
+<script>
+    const fields = [
+        'race','gender','age','admission_type_id','discharge_disposition_id',
+        'admission_source_id','time_in_hospital','num_lab_procedures','num_procedures',
+        'num_medications','number_outpatient','number_emergency','number_inpatient',
+        'diag_1','diag_2','diag_3','number_diagnoses','metformin','repaglinide',
+        'nateglinide','chlorpropamide','glimepiride','acetohexamide','glipizide',
+        'glyburide','tolbutamide','pioglitazone','rosiglitazone','acarbose',
+        'miglitol','troglitazone','tolazamide','examide','citoglipton','insulin',
+        'glyburide_metformin','glipizide_metformin','glimepiride_pioglitazone',
+        'metformin_rosiglitazone','metformin_pioglitazone','med_change','diabetes_med'
+    ];
+
+    const intFields = [
+        'admission_type_id','discharge_disposition_id','admission_source_id',
+        'time_in_hospital','num_lab_procedures','num_procedures','num_medications',
+        'number_outpatient','number_emergency','number_inpatient','number_diagnoses'
+    ];
+
+    async function predict() {
+        const btn = document.getElementById('predictBtn');
+        const errorMsg = document.getElementById('errorMsg');
+        const resultCard = document.getElementById('resultCard');
+
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Analyzing patient data...';
+        errorMsg.style.display = 'none';
+        resultCard.style.display = 'none';
+
+        const data = {};
+        for (const f of fields) {
+            const el = document.getElementById(f);
+            data[f] = intFields.includes(f) ? parseInt(el.value) : el.value;
+        }
+
+        try {
+            const res = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.detail || 'Prediction failed');
+            }
+
+            const result = await res.json();
+
+            const prob = result.predicted_probability;
+            const cls = result.predicted_class;
+
+            document.getElementById('probValue').textContent = (prob * 100).toFixed(1) + '%';
+            
+            const badge = document.getElementById('riskBadge');
+            badge.textContent = cls === 1 ? 'HIGH RISK' : 'LOW RISK';
+            badge.className = 'risk-badge ' + (cls === 1 ? 'high' : 'low');
+
+            resultCard.className = 'card result-card ' + (cls === 1 ? 'high-risk' : 'low-risk');
+
+            document.getElementById('summaryText').textContent = 
+                result.llm_summary || 'Summary not available.';
+
+            resultCard.style.display = 'block';
+            resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        } catch (err) {
+            errorMsg.textContent = 'Error: ' + err.message;
+            errorMsg.style.display = 'block';
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = 'Predict Readmission Risk';
+        }
+    }
+</script>
+
+</body>
+</html>

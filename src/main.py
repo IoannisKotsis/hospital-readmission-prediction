@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from preprocessing import map_icd9
 from database import insert_prediction
 from llm import generate_summary
-
+from fastapi.responses import HTMLResponse
 
 # Loading model and encoder
 with open('../src/model.pkl','rb') as file:
@@ -110,3 +110,7 @@ def predict(patient: PatientData):
         "summary" : summary
     }
 
+@app.get("/", response_class=HTMLResponse)
+def home():
+    with open("index.html", "r") as f:
+        return f.read()
