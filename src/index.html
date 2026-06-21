@@ -547,7 +547,7 @@
             resultCard.className = 'card result-card ' + (cls === 1 ? 'high-risk' : 'low-risk');
 
             document.getElementById('summaryText').textContent = 
-                result.llm_summary || 'Summary not available.';
+                result.summary || 'Summary not available.';
 
             resultCard.style.display = 'block';
             resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
