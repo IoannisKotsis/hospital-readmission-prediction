@@ -22,7 +22,7 @@ def shap_explainer(model, X_test):
 
 
 if __name__ == "__main__":
-    with open('model', 'rb') as file:
+    with open('model.pkl', 'rb') as file:
         model = pickle.load(file)
 
     _, X_test, *_ = data_preprocessing()
