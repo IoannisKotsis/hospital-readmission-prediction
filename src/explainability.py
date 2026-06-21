@@ -14,8 +14,9 @@ def shap_explainer(model, X_test):
     shap_values = explainer.shap_values(X_test)
 
     #visualization
-    shap.summary_plot(shap_values, X_test, plot_type="dot", show = False, plot_size = (9,7))
-    plt.savefig('shap_values.png', bbox_inches = 'tight', pad_inches = 0.3)
+    plt.figure(figsize=(12, 8))
+    shap.summary_plot(shap_values, X_test, plot_type="dot", show=False, plot_size=None)
+    plt.savefig('shap_values.png', bbox_inches='tight', pad_inches=0.3, dpi=100)
     plt.close()
 
     return shap_values
