@@ -50,12 +50,53 @@ in the `examples/` folder.
 
 ## Model Performance
 
-
-| AUC-ROC | 0.637 |
-| Accuracy | 63.5% |
-| Precision | 13.4% |
-| Recall | 55.4% |
-| F1-Score | 0.215 |
+|
+ML MODEL
+|
+XGBoost
+|
+RandomizedSearchCV
+|
+Scikit-learn
+|
+|
+Explainability
+|
+SHAP
+|
+|
+API
+|
+FastAPI
+|
+Pydantic
+|
+|
+Database
+|
+PostgreSQL
+|
+|
+LLM
+|
+Google Gemini
+|
+|
+Containerization
+|
+Docker
+|
+docker-compose
+|
+Deployment
+|
+Railway (PaaS)
+|
+|
+Language
+|
+Python
+|
 
 This dataset is a well-known challenging benchmark in healthcare ML. 
 Published studies report AUC scores between 0.62–0.70 (Strack et al., 2014), 
