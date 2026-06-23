@@ -7,270 +7,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f0f4f8;
-            color: #1a2332;
-            min-height: 100vh;
-        }
-
-        header {
-            background: linear-gradient(135deg, #1a365d 0%, #2d4a7a 100%);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-        }
-
-        header p {
-            font-size: 0.95rem;
-            opacity: 0.85;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem 2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-        }
-
-        .card h2 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1a365d;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 0.8rem;
-        }
-
-        .field {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .field label {
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #64748b;
-            margin-bottom: 0.25rem;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .field input, .field select {
-            padding: 0.5rem 0.6rem;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.2s;
-            background: #fafbfc;
-        }
-
-        .field input:focus, .field select:focus {
-            outline: none;
-            border-color: #3b82f6;
-            background: white;
-        }
-
-        .btn-predict {
-            display: block;
-            width: 100%;
-            padding: 0.9rem;
-            background: linear-gradient(135deg, #1a365d 0%, #2d4a7a 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 0.3px;
-        }
-
+        body { font-family: 'Inter', sans-serif; background: #f0f4f8; color: #1a2332; min-height: 100vh; }
+        header { background: linear-gradient(135deg, #1a365d 0%, #2d4a7a 100%); color: white; padding: 2rem; text-align: center; }
+        header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.4rem; }
+        header p { font-size: 0.95rem; opacity: 0.85; }
+        .container { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
+        .card { background: white; border-radius: 12px; padding: 1.5rem 2rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .card h2 { font-size: 1.1rem; font-weight: 600; color: #1a365d; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.8rem; }
+        .field { display: flex; flex-direction: column; }
+        .field label { font-size: 0.75rem; font-weight: 500; color: #64748b; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.3px; }
+        .field input, .field select { padding: 0.5rem 0.6rem; border: 1.5px solid #e2e8f0; border-radius: 6px; font-size: 0.9rem; font-family: 'Inter', sans-serif; transition: border-color 0.2s; background: #fafbfc; }
+        .field input:focus, .field select:focus { outline: none; border-color: #3b82f6; background: white; }
+        .btn-predict { display: block; width: 100%; padding: 0.9rem; background: linear-gradient(135deg, #1a365d 0%, #2d4a7a 100%); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; font-family: 'Inter', sans-serif; letter-spacing: 0.3px; }
         .btn-predict:hover { opacity: 0.9; }
         .btn-predict:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        .result-card {
-            display: none;
-            border-left: 4px solid #3b82f6;
-        }
-
+        .result-card { display: none; border-left: 4px solid #3b82f6; }
         .result-card.low-risk { border-left-color: #10b981; }
         .result-card.high-risk { border-left-color: #ef4444; }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .risk-badge {
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
+        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .risk-badge { padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
         .risk-badge.low { background: #d1fae5; color: #065f46; }
         .risk-badge.high { background: #fee2e2; color: #991b1b; }
-
-        .probability {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #1a365d;
-        }
-
-        .probability span {
-            font-size: 0.9rem;
-            font-weight: 400;
-            color: #64748b;
-        }
-
-        .summary {
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 1rem 1.2rem;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #334155;
-        }
-
-        .summary-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-bottom: 0.4rem;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 1rem;
-            color: #64748b;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2.5px solid #e2e8f0;
-            border-top-color: #3b82f6;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            margin-right: 0.5rem;
-            vertical-align: middle;
-        }
-
+        .probability { font-size: 2.2rem; font-weight: 700; color: #1a365d; }
+        .summary { background: #f8fafc; border-radius: 8px; padding: 1rem 1.2rem; margin-top: 1rem; font-size: 0.9rem; line-height: 1.6; color: #334155; }
+        .summary-label { font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 0.4rem; }
+        .spinner { display: inline-block; width: 20px; height: 20px; border: 2.5px solid #e2e8f0; border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 0.5rem; vertical-align: middle; }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        .error-msg {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 0.8rem 1rem;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            display: none;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: #94a3b8;
-            font-size: 0.8rem;
-        }
-
+        .error-msg { background: #fee2e2; color: #991b1b; padding: 0.8rem 1rem; border-radius: 6px; font-size: 0.9rem; display: none; }
+        footer { text-align: center; padding: 2rem; color: #94a3b8; font-size: 0.8rem; }
         footer a { color: #3b82f6; text-decoration: none; }
-
-        .label-row {
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-        margin-bottom: 0.25rem;
-    }
-
-    .label-row label {
-        margin-bottom: 0;
-    }
-
-    .info-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
-        background: #cbd5e1;
-        color: white;
-        font-size: 0.65rem;
-        font-weight: 700;
-        cursor: help;
-        position: relative;
-        font-family: serif;
-    }
-
-    .info-icon:hover .tooltip {
-        display: block;
-    }
-
-    .tooltip {
-        display: none;
-        position: absolute;
-        bottom: calc(100% + 8px);
-        left: 50%;
-        transform: translateX(-50%);
-        background: #1a2332;
-        color: white;
-        padding: 0.6rem 0.8rem;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 400;
-        white-space: pre-line;
-        width: 220px;
-        text-align: left;
-        z-index: 10;
-        line-height: 1.5;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .tooltip::after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 5px solid transparent;
-        border-top-color: #1a2332;
-    }
-
-        @media (max-width: 600px) {
-            .grid { grid-template-columns: 1fr 1fr; }
-            header h1 { font-size: 1.4rem; }
-            .probability { font-size: 1.8rem; }
-        }
+        .label-row { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.25rem; }
+        .label-row label { margin-bottom: 0; }
+        .info-icon { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; background: #cbd5e1; color: white; font-size: 0.65rem; font-weight: 700; cursor: help; position: relative; font-family: serif; }
+        .info-icon:hover .tooltip { display: block; }
+        .tooltip { display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #1a2332; color: white; padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.75rem; font-weight: 400; white-space: pre-line; width: 220px; text-align: left; z-index: 10; line-height: 1.5; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #1a2332; }
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } header h1 { font-size: 1.4rem; } .probability { font-size: 1.8rem; } }
     </style>
 </head>
 <body>
@@ -282,7 +55,6 @@
 
 <div class="container">
 
-    <!-- Demographics -->
     <div class="card">
         <h2>Patient Demographics</h2>
         <div class="grid">
@@ -321,41 +93,36 @@
         </div>
     </div>
 
-    <!-- Admission Info -->
     <div class="card">
         <h2>Admission Details</h2>
         <div class="grid">
-            
-        <div class="field">
-        <div class="label-row">
-        <label>Admission Type ID</label>
-        <span class="info-icon">?<span class="tooltip">
-                1 = Emergency
-                2 = Urgent
-                3 = Elective
-                4 = Newborn
-                5 = Not Available
-                6 = NULL
-                7 = Trauma Center
-                8 = Not Mapped</span></span>
+            <div class="field">
+                <div class="label-row">
+                    <label>Admission Type ID</label>
+                    <span class="info-icon">?<span class="tooltip">1 = Emergency
+2 = Urgent
+3 = Elective
+4 = Newborn
+5 = Not Available
+6 = NULL
+7 = Trauma Center
+8 = Not Mapped</span></span>
+                </div>
+                <input type="number" id="admission_type_id" value="1" min="1" max="8">
             </div>
-            <input type="number" id="admission_type_id" value="1" min="1" max="8">
-        </div>
-        <div class="field">
-            <div class="label-row">
-                <label>Discharge Disp. ID</label>
-                <span class="info-icon">?<span class="tooltip">Where the patient went after discharge.
-                    1 = Home
-                    3 = Skilled Nursing Facility
-                    6 = Home Health Care
-                    11 = Expired
-                    Range: 1-28</span></span>
+            <div class="field">
+                <div class="label-row">
+                    <label>Discharge Disp. ID</label>
+                    <span class="info-icon">?<span class="tooltip">Where the patient went after discharge.
+1 = Home
+3 = Skilled Nursing Facility
+6 = Home Health Care
+11 = Expired
+Range: 1-28</span></span>
+                </div>
+                <input type="number" id="discharge_disposition_id" value="1" min="1" max="28">
             </div>
-            <input type="number" id="discharge_disposition_id" value="1" min="1" max="28">
-        </div>
-            
-        
-           <div class="field">
+            <div class="field">
                 <div class="label-row">
                     <label>Admission Source ID</label>
                     <span class="info-icon">?<span class="tooltip">How the patient arrived.
@@ -373,9 +140,6 @@ Range: 1-25</span></span>
         </div>
     </div>
 
-    <!-- Clinical -->
-
-    <!-- Clinical -->
     <div class="card">
         <h2>Clinical Information</h2>
         <div class="grid">
@@ -410,11 +174,9 @@ Range: 1-25</span></span>
         </div>
     </div>
 
-    <!-- Diagnoses -->
     <div class="card">
         <h2>Diagnoses (ICD-9 Codes)</h2>
         <div class="grid">
-
             <div class="field">
                 <div class="label-row">
                     <label>Primary Diagnosis</label>
@@ -427,7 +189,6 @@ Range: 1-25</span></span>
                 </div>
                 <input type="text" id="diag_1" value="428" placeholder="e.g. 428">
             </div>
-
             <div class="field">
                 <div class="label-row">
                     <label>Secondary Diagnosis</label>
@@ -440,7 +201,6 @@ Range: 1-25</span></span>
                 </div>
                 <input type="text" id="diag_2" value="250" placeholder="e.g. 250">
             </div>
-
             <div class="field">
                 <div class="label-row">
                     <label>Tertiary Diagnosis</label>
@@ -450,110 +210,41 @@ Range: 1-25</span></span>
 520-579 = Digestive
 250 = Diabetes
 800-999 = Injury</span></span>
-            </div>
-            <input type="text" id="diag_3" value="486" placeholder="e.g. 486">
-        </div>
-
-    <!-- Medications -->
-    <div class="card">
-        <h2>Medications</h2>
-        <div class="grid">
-            <div class="field">
-                <label>Metformin</label>
-                <select id="metformin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Repaglinide</label>
-                <select id="repaglinide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Nateglinide</label>
-                <select id="nateglinide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Chlorpropamide</label>
-                <select id="chlorpropamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Glimepiride</label>
-                <select id="glimepiride"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Acetohexamide</label>
-                <select id="acetohexamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Glipizide</label>
-                <select id="glipizide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Glyburide</label>
-                <select id="glyburide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Tolbutamide</label>
-                <select id="tolbutamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Pioglitazone</label>
-                <select id="pioglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Rosiglitazone</label>
-                <select id="rosiglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Acarbose</label>
-                <select id="acarbose"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Miglitol</label>
-                <select id="miglitol"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Troglitazone</label>
-                <select id="troglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Tolazamide</label>
-                <select id="tolazamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Examide</label>
-                <select id="examide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Citoglipton</label>
-                <select id="citoglipton"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Insulin</label>
-                <select id="insulin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Glyburide-Metformin</label>
-                <select id="glyburide_metformin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Glipizide-Metformin</label>
-                <select id="glipizide_metformin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Glimepiride-Pioglitazone</label>
-                <select id="glimepiride_pioglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Metformin-Rosiglitazone</label>
-                <select id="metformin_rosiglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
-            </div>
-            <div class="field">
-                <label>Metformin-Pioglitazone</label>
-                <select id="metformin_pioglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select>
+                </div>
+                <input type="text" id="diag_3" value="486" placeholder="e.g. 486">
             </div>
         </div>
     </div>
 
-    <!-- Treatment -->
+    <div class="card">
+        <h2>Medications</h2>
+        <div class="grid">
+            <div class="field"><label>Metformin</label><select id="metformin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Repaglinide</label><select id="repaglinide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Nateglinide</label><select id="nateglinide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Chlorpropamide</label><select id="chlorpropamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Glimepiride</label><select id="glimepiride"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Acetohexamide</label><select id="acetohexamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Glipizide</label><select id="glipizide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Glyburide</label><select id="glyburide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Tolbutamide</label><select id="tolbutamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Pioglitazone</label><select id="pioglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Rosiglitazone</label><select id="rosiglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Acarbose</label><select id="acarbose"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Miglitol</label><select id="miglitol"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Troglitazone</label><select id="troglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Tolazamide</label><select id="tolazamide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Examide</label><select id="examide"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Citoglipton</label><select id="citoglipton"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Insulin</label><select id="insulin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Glyburide-Metformin</label><select id="glyburide_metformin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Glipizide-Metformin</label><select id="glipizide_metformin"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Glimepiride-Pioglitazone</label><select id="glimepiride_pioglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Metformin-Rosiglitazone</label><select id="metformin_rosiglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+            <div class="field"><label>Metformin-Pioglitazone</label><select id="metformin_pioglitazone"><option>No</option><option>Steady</option><option>Up</option><option>Down</option></select></div>
+        </div>
+    </div>
+
     <div class="card">
         <h2>Treatment Summary</h2>
         <div class="grid">
@@ -574,15 +265,10 @@ Range: 1-25</span></span>
         </div>
     </div>
 
-    <!-- Predict Button -->
-    <button class="btn-predict" id="predictBtn" onclick="predict()">
-        Predict Readmission Risk
-    </button>
+    <button class="btn-predict" id="predictBtn" onclick="predict()">Predict Readmission Risk</button>
 
-    <!-- Error -->
     <div class="error-msg" id="errorMsg"></div>
 
-    <!-- Result -->
     <div class="card result-card" id="resultCard">
         <div class="result-header">
             <div>
@@ -651,7 +337,6 @@ Range: 1-25</span></span>
             }
 
             const result = await res.json();
-
             const prob = result.predicted_probability;
             const cls = result.predicted_class;
 
@@ -662,9 +347,7 @@ Range: 1-25</span></span>
             badge.className = 'risk-badge ' + (cls === 1 ? 'high' : 'low');
 
             resultCard.className = 'card result-card ' + (cls === 1 ? 'high-risk' : 'low-risk');
-
-            document.getElementById('summaryText').textContent = 
-                result.summary || 'Summary not available.';
+            document.getElementById('summaryText').textContent = result.summary || 'Summary not available.';
 
             resultCard.style.display = 'block';
             resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
