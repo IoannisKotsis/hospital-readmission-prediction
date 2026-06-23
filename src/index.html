@@ -205,6 +205,67 @@
 
         footer a { color: #3b82f6; text-decoration: none; }
 
+        .label-row {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .label-row label {
+        margin-bottom: 0;
+    }
+
+    .info-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #cbd5e1;
+        color: white;
+        font-size: 0.65rem;
+        font-weight: 700;
+        cursor: help;
+        position: relative;
+        font-family: serif;
+    }
+
+    .info-icon:hover .tooltip {
+        display: block;
+    }
+
+    .tooltip {
+        display: none;
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1a2332;
+        color: white;
+        padding: 0.6rem 0.8rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 400;
+        white-space: pre-line;
+        width: 220px;
+        text-align: left;
+        z-index: 10;
+        line-height: 1.5;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: #1a2332;
+    }
+
         @media (max-width: 600px) {
             .grid { grid-template-columns: 1fr 1fr; }
             header h1 { font-size: 1.4rem; }
@@ -264,10 +325,22 @@
     <div class="card">
         <h2>Admission Details</h2>
         <div class="grid">
-            <div class="field">
-                <label>Admission Type ID</label>
-                <input type="number" id="admission_type_id" value="1" min="1" max="8">
+            
+        <div class="field">
+        <div class="label-row">
+        <label>Admission Type ID</label>
+        <span class="info-icon">?<span class="tooltip">
+            1 = Emergency
+            2 = Urgent
+            3 = Elective
+            4 = Newborn
+            5 = Not Available
+            6 = NULL
+            7 = Trauma Center
+            8 = Not Mapped</span></span>
             </div>
+            <input type="number" id="admission_type_id" value="1" min="1" max="8">
+        </div>
             <div class="field">
                 <label>Discharge Disp. ID</label>
                 <input type="number" id="discharge_disposition_id" value="1" min="1" max="28">
