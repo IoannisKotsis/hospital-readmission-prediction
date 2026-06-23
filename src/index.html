@@ -330,31 +330,50 @@
         <div class="label-row">
         <label>Admission Type ID</label>
         <span class="info-icon">?<span class="tooltip">
-            1 = Emergency
-            2 = Urgent
-            3 = Elective
-            4 = Newborn
-            5 = Not Available
-            6 = NULL
-            7 = Trauma Center
-            8 = Not Mapped</span></span>
+                1 = Emergency
+                2 = Urgent
+                3 = Elective
+                4 = Newborn
+                5 = Not Available
+                6 = NULL
+                7 = Trauma Center
+                8 = Not Mapped</span></span>
             </div>
             <input type="number" id="admission_type_id" value="1" min="1" max="8">
         </div>
-            <div class="field">
+        <div class="field">
+            <div class="label-row">
                 <label>Discharge Disp. ID</label>
-                <input type="number" id="discharge_disposition_id" value="1" min="1" max="28">
+                <span class="info-icon">?<span class="tooltip">Where the patient went after discharge.
+                    1 = Home
+                    3 = Skilled Nursing Facility
+                    6 = Home Health Care
+                    11 = Expired
+                    Range: 1-28</span></span>
             </div>
-            <div class="field">
-                <label>Admission Source ID</label>
+            <input type="number" id="discharge_disposition_id" value="1" min="1" max="28">
+        </div>
+            
+        
+           <div class="field">
+                <div class="label-row">
+                    <label>Admission Source ID</label>
+                    <span class="info-icon">?<span class="tooltip">How the patient arrived.
+1 = Physician Referral
+7 = Emergency Room
+4 = Transfer from Hospital
+Range: 1-25</span></span>
+                </div>
                 <input type="number" id="admission_source_id" value="7" min="1" max="25">
             </div>
             <div class="field">
-                <label>Time in Hospital</label>
+                <label>Time in Hospital (days)</label>
                 <input type="number" id="time_in_hospital" value="4" min="1" max="14">
             </div>
         </div>
     </div>
+
+    <!-- Clinical -->
 
     <!-- Clinical -->
     <div class="card">
@@ -395,20 +414,45 @@
     <div class="card">
         <h2>Diagnoses (ICD-9 Codes)</h2>
         <div class="grid">
+
             <div class="field">
-                <label>Primary Diagnosis</label>
-                <input type="text" id="diag_1" value="428" placeholder="e.g. 428">
-            </div>
-            <div class="field">
-                <label>Secondary Diagnosis</label>
-                <input type="text" id="diag_2" value="250" placeholder="e.g. 250">
-            </div>
-            <div class="field">
-                <label>Tertiary Diagnosis</label>
-                <input type="text" id="diag_3" value="486" placeholder="e.g. 486">
-            </div>
-        </div>
+                <div class="label-row">
+                    <label>Primary Diagnosis</label>
+                    <span class="info-icon">?<span class="tooltip">ICD-9 code (3 digits).
+390-459 = Circulatory
+460-519 = Respiratory
+520-579 = Digestive
+250 = Diabetes
+800-999 = Injury</span></span>
     </div>
+    <input type="text" id="diag_1" value="428" placeholder="e.g. 428">
+</div>
+
+            <div class="field">
+                <div class="label-row">
+                    <label>Secondary Diagnosis</label>
+                    <span class="info-icon">?<span class="tooltip">ICD-9 code (3 digits).
+390-459 = Circulatory
+460-519 = Respiratory
+520-579 = Digestive
+250 = Diabetes
+800-999 = Injury</span></span>
+    </div>
+    <input type="text" id="diag_2" value="250" placeholder="e.g. 250">
+</div>
+
+            <div class="field">
+                <div class="label-row">
+                    <label>Tertiary Diagnosis</label>
+                    <span class="info-icon">?<span class="tooltip">ICD-9 code (3 digits).
+390-459 = Circulatory
+460-519 = Respiratory
+520-579 = Digestive
+250 = Diabetes
+800-999 = Injury</span></span>
+    </div>
+    <input type="text" id="diag_3" value="486" placeholder="e.g. 486">
+</div>
 
     <!-- Medications -->
     <div class="card">
