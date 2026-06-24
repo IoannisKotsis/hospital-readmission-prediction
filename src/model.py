@@ -1,4 +1,4 @@
-#importing libraries
+# Importing packages
 from preprocessing import data_preprocessing
 import pandas as pd
 from sklearn.metrics import (
@@ -24,7 +24,7 @@ pd.set_option("display.max_columns", 100)
 def tuning(X_train, Y_train):
 
 
-    #model parameters distribution
+    # Model parameters distribution
     param_distributions = {
         "n_estimators" : [50, 100, 150],
         "max_depth" : [3, 5, 6, 7],
@@ -36,12 +36,12 @@ def tuning(X_train, Y_train):
         "gamma" : [0.15, 0.2],
     }
 
-    #cross validation item
-    ##returns an object that knows how to split the data
+    # Cross validation item
+    ## Returns an object that knows how to split the data
     skf_cv = StratifiedKFold(n_splits = 5, shuffle = True, random_state = 256)
 
-    #cross validation with random parameters
-    ##creates a search object with all the execution details
+    # Cross validation with random parameters
+    ## Creates a search object with all the execution details
     search = RandomizedSearchCV(
         estimator = XGBClassifier(
             scale_pos_weight = (len(Y_train) - sum(Y_train))/sum(Y_train),
@@ -56,7 +56,7 @@ def tuning(X_train, Y_train):
     )
 
 
-    ##for each parameter combination, it runs 5-fold CV and calculates the mean AUC of them
+    ## For each parameter combination, it runs 5-fold CV and calculates the mean AUC of them
     search.fit(X_train, Y_train)
 
     print(f"Best parameters: \n {search.best_params_}")
@@ -74,47 +74,47 @@ def final_training(X_train, X_test, Y_train, Y_test, best_params):
             objective = "binary:logistic"
             )
 
-    #model training
+    # Model training
     model.fit(X_train, Y_train)
 
     with open('model.pkl', 'wb') as file:
         pickle.dump(model, file)
 
 
-    #TESTING:
+    # TESTING:
 
-    #model predictions
+    # Model predictions
     pred = model.predict(X_test)
 
-    #model_probabilities
+    # Model_probabilities
     pred_prob = model.predict_proba(X_test)
 
-    #model probabilities of belonging to the positive class
+    # Model probabilities of belonging to the positive class
     pos_class_prob = pred_prob[:, 1]
 
 
 
-    #Accuracy
+    # Accuracy
     accuracy = accuracy_score(Y_test, pred)
     print("Accuracy:", accuracy)
 
-    #Confusion Matrix
+    # Confusion Matrix
     cm = confusion_matrix(Y_test, pred)
     print("Conf. matrix:", cm)
 
-    #Precision
+    # Precision
     precision = precision_score(Y_test, pred)
     print("Precision:", precision*100)
 
-    #Recalla
+    # Recall
     recall = recall_score(Y_test, pred)
     print("Recall:", recall*100)
 
-    #F1-Score
+    # F1-Score
     F1_score = f1_score(Y_test, pred)
     print("F1-Score:", F1_score)
 
-    #ROC Curve
+    # ROC Curve
     fpr, tpr, thresholds = roc_curve(Y_test, pos_class_prob)
     plt.plot(fpr, tpr)
     plt.title("ROC Curve")
@@ -125,7 +125,7 @@ def final_training(X_train, X_test, Y_train, Y_test, best_params):
     plt.savefig("roc_curve.png")
     plt.close()
 
-    #AUC Curve
+    # AUC Curve
     auc = roc_auc_score(Y_test, pos_class_prob)
     print("AUC:", auc)
 

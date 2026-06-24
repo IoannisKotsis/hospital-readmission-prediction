@@ -1,9 +1,10 @@
+# Import packages
 from dotenv import load_dotenv
 import os
 import google.generativeai as genai
 
 
-# load environment variables from the .env file (API key)
+# Load environment variables from the .env file (API key)
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 

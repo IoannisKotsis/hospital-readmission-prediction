@@ -1,3 +1,4 @@
+# Import packages
 from pydantic import BaseModel
 import pickle
 import pandas as pd
@@ -110,6 +111,7 @@ def predict(patient: PatientData):
         "summary" : summary
     }
 
+# HTML API
 @app.get("/", response_class=HTMLResponse)
 def home():
     with open("index.html", "r") as f:

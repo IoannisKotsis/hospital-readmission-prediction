@@ -1,4 +1,4 @@
-#packages imported for preprocessing
+# Import necessary packages
 import pandas as pd
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.model_selection import train_test_split
@@ -34,14 +34,14 @@ def map_icd9(code):
             return "Other"
 
 
-#function that returns the preprocessed data (X_train, X_test, Y_train, Y_test) for model training and evaluation
+# Function that returns the preprocessed data (X_train, X_test, Y_train, Y_test) for model training and evaluation
 def data_preprocessing():
 
 
-    #dataframe with relative path to csv file
+    # Dataframe with relative path to csv file
     df = pd.read_csv("../data/diabetic_data.csv", na_values = "?", low_memory = False)
 
-    #renaming two specific columns for SQL naming compatibility
+    # Renaming two specific columns for SQL naming compatibility
     df = df.rename(columns = {
         'change' : 'med_change',
         'diabetesMed' : 'diabetes_med',
@@ -53,16 +53,16 @@ def data_preprocessing():
     })
 
     
-    #removes duplicates based on patient_nbr column
+    # Removes duplicates based on patient_nbr column
     df.drop_duplicates(subset="patient_nbr", inplace = True)
 
-    #removal of rows where any of the diagnosis columns have missing values
+    # Removal of rows where any of the diagnosis columns have missing values
     df.dropna(axis=0, subset= ["diag_1", "diag_2", "diag_3"], inplace = True)
 
-    #remove patients that expired or went to hospice
+    # Remove patients that expired or went to hospice
     df=df[~df['discharge_disposition_id'].isin([11, 13, 14, 19, 20, 21])]
 
-    #removal of columns with many missing values and columns that are not useful for prediction
+    # Removal of columns with many missing values and columns that are not useful for prediction
     df = df.drop(columns = [
         "weight",
         "encounter_id",
@@ -72,15 +72,15 @@ def data_preprocessing():
         "medical_specialty",
         "payer_code"])
 
-    #classify the target variable into binary classes
+    # Classify the target variable into binary classes
     df["readmitted"] = df["readmitted"].replace({"NO": 0, ">30": 0, "<30": 1})
     df["readmitted"] =df["readmitted"].astype(int)
 
-    #filling missing values with unknown for the race column
+    # Filling missing values with unknown for the race column
     df["race"] = df["race"].fillna("Unknown")
 
 
-    #dataset spliting into features and target variable
+    # Dataset spliting into features and target variable
     Y = df["readmitted"]
     X = df.drop(columns = ["readmitted"])
 

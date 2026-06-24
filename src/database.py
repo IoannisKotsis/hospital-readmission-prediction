@@ -1,15 +1,15 @@
-# import necessary modules
+# Import necessary modules
 from dotenv import load_dotenv
 import os
 import psycopg2
 
-# load environment variables from the .env file
+# Load environment variables from the .env file
 load_dotenv()
 
 
 def get_connection():
 
-    # reads from env variables
+    # Reads from env variables
     db_host = os.getenv("DB_HOST")
     db_name = os.getenv("DB_NAME")
     db_user = os.getenv("DB_USER")
@@ -17,7 +17,7 @@ def get_connection():
     db_port = os.getenv("DB_PORT")
 
     try:
-        # creates the connection
+        # Creates the connection
         connection = psycopg2.connect(
             host = db_host,
             dbname = db_name,
@@ -38,14 +38,14 @@ def insert_prediction(data):
     placeholders = ", ".join(['%s'] * len(data))
     values = tuple(data.values())
 
-    # connection and cursor creation
+    # Connection and cursor creation
     connection = get_connection()
     cursor = connection.cursor()
 
-    # query creation
+    # Query creation
     query  = f"INSERT INTO readmission_info ({columns}) VALUES ({placeholders})"
 
-    # query execution
+    # Query execution
     try:
         cursor.execute(query, values)
         connection.commit()
