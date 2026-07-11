@@ -58,8 +58,29 @@ def insert_prediction(data):
         connection.close()
 
 
+def get_risk_score(patient_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = "SELECT predicted_probability FROM readmission_info WHERE id = %s"                                                                 
+    try:
+        cursor.execute(query, (patient_id,))     
+        row = cursor.fetchone()
+
+        if row is None:
+            return None
+        return row[0]
+
+    except Exception as e:
+        print(f"Error: {e}")
+        raise
+    finally:
+        cursor.close()
+        connection.close()
+        
 
 if __name__ == "__main__":
     connection = get_connection()
     print(connection)
+    print(get_risk_score(1))
     connection.close()
