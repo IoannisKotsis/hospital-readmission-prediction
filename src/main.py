@@ -2,12 +2,12 @@
 from pydantic import BaseModel
 import pickle
 import pandas as pd
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from preprocessing import map_icd9
-from database import insert_prediction
+from database import insert_prediction, get_risk_score
 from llm import generate_summary
 from fastapi.responses import HTMLResponse
-
+ 
 # Loading model and encoder
 with open('../src/model.pkl','rb') as file:
     model = pickle.load(file)
@@ -110,7 +110,15 @@ def predict(patient: PatientData):
         "predicted_class" : predicted_class,
         "summary" : summary
     }
-
+    
+@app.get("/risk/{patient_id}")
+def get_risk(patient_id: int):
+    score = get_risk_score(patient_id)
+    if score is None:
+        raise HTTPException(status_code=404, detail="Patient not found")
+    return {"risk_score": score}
+    
+    
 # HTML API
 @app.get("/", response_class=HTMLResponse)
 def home():
