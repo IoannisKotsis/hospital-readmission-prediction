@@ -67,7 +67,7 @@ class PatientData(BaseModel):
 class SummaryData(BaseModel):
     patient_id: int
     summary: str
-    final_red_flag: str
+    final_red_flag: str | None = None
 
 # API request
 @app.post("/predict")
