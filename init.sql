@@ -48,3 +48,11 @@ CREATE TABLE readmission_info (
     model_version VARCHAR(50) NOT NULL,
     llm_summary TEXT
 );
+
+CREATE TABLE IF NOT EXISTS conversation_summaries(
+    id SERIAL PRIMARY KEY,
+    patient_id INTEGER REFERENCES readmission_info(id) ,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    final_red_flag VARCHAR(50),
+    summary TEXT
+);

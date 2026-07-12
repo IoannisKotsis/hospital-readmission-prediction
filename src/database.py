@@ -78,6 +78,30 @@ def get_risk_score(patient_id):
         cursor.close()
         connection.close()
         
+        
+def insert_summary(patient_id, summary, final_red_flag):
+
+    # Connection and cursor creation
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    # Query creation
+    query  = "INSERT INTO conversation_summaries (patient_id, summary, final_red_flag) VALUES (%s, %s, %s)"
+    values = (patient_id, summary, final_red_flag)
+
+    # Query execution
+    try:
+        cursor.execute(query, values)
+        connection.commit()
+    except Exception as e:
+        print(f"Error: {e}")
+        connection.rollback()
+        raise
+    finally:
+        cursor.close()
+        connection.close()
+    
+        
 
 if __name__ == "__main__":
     connection = get_connection()

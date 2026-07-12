@@ -4,7 +4,7 @@ import pickle
 import pandas as pd
 from fastapi import FastAPI, HTTPException
 from preprocessing import map_icd9
-from database import insert_prediction, get_risk_score
+from database import insert_prediction, get_risk_score, insert_summary
 from llm import generate_summary
 from fastapi.responses import HTMLResponse
  
@@ -63,7 +63,11 @@ class PatientData(BaseModel):
     metformin_pioglitazone : str
     med_change : str
     diabetes_med : str
-
+    
+class SummaryData(BaseModel):
+    patient_id: int
+    summary: str
+    final_red_flag: str
 
 # API request
 @app.post("/predict")
@@ -117,10 +121,22 @@ def get_risk(patient_id: int):
     if score is None:
         raise HTTPException(status_code=404, detail="Patient not found")
     return {"risk_score": score}
+   
+   
+@app.post("/summary")
+def save_summary(data: SummaryData):
+    try:
+        insert_summary(data.patient_id, data.summary, data.final_red_flag)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="Patient not found")
+    return {"status": "saved"}
     
+
     
 # HTML API
 @app.get("/", response_class=HTMLResponse)
 def home():
     with open("index.html", "r") as f:
         return f.read()
+    
+
