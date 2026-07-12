@@ -131,8 +131,6 @@ def save_summary(data: SummaryData):
         raise HTTPException(status_code=404, detail="Patient not found")
     return {"status": "saved"}
     
-
-    
 # HTML API
 @app.get("/", response_class=HTMLResponse)
 def home():
