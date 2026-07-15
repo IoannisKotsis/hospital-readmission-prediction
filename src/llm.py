@@ -3,13 +3,13 @@ from dotenv import load_dotenv
 import os
 import google.generativeai as genai
 
-
 # Load environment variables from the .env file (API key)
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
 # Authentication with Google using API key
 genai.configure(api_key=api_key)
+
 
 def generate_summary(data, predicted_probability, predicted_class):
 

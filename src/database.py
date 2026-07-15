@@ -19,11 +19,11 @@ def get_connection():
     try:
         # Creates the connection
         connection = psycopg2.connect(
-            host = db_host,
-            dbname = db_name,
-            user = db_user,
-            password = db_password,
-            port = db_port
+            host=db_host,
+            dbname=db_name,
+            user=db_user,
+            password=db_password,
+            port=db_port,
         )
 
         return connection
@@ -31,11 +31,11 @@ def get_connection():
         print(f"Error: {e}")
         raise
 
-    
+
 def insert_prediction(data):
 
     columns = ", ".join(data.keys())
-    placeholders = ", ".join(['%s'] * len(data))
+    placeholders = ", ".join(["%s"] * len(data))
     values = tuple(data.values())
 
     # Connection and cursor creation
@@ -43,7 +43,7 @@ def insert_prediction(data):
     cursor = connection.cursor()
 
     # Query creation
-    query  = f"INSERT INTO readmission_info ({columns}) VALUES ({placeholders})"
+    query = f"INSERT INTO readmission_info ({columns}) VALUES ({placeholders})"
 
     # Query execution
     try:
@@ -62,9 +62,9 @@ def get_risk_score(patient_id):
     connection = get_connection()
     cursor = connection.cursor()
 
-    query = "SELECT predicted_probability FROM readmission_info WHERE id = %s"                                                                 
+    query = "SELECT predicted_probability FROM readmission_info WHERE id = %s"
     try:
-        cursor.execute(query, (patient_id,))     
+        cursor.execute(query, (patient_id,))
         row = cursor.fetchone()
 
         if row is None:
@@ -77,8 +77,8 @@ def get_risk_score(patient_id):
     finally:
         cursor.close()
         connection.close()
-        
-        
+
+
 def insert_summary(patient_id, summary, final_red_flag):
 
     # Connection and cursor creation
@@ -86,7 +86,7 @@ def insert_summary(patient_id, summary, final_red_flag):
     cursor = connection.cursor()
 
     # Query creation
-    query  = "INSERT INTO conversation_summaries (patient_id, summary, final_red_flag) VALUES (%s, %s, %s)"
+    query = "INSERT INTO conversation_summaries (patient_id, summary, final_red_flag) VALUES (%s, %s, %s)"
     values = (patient_id, summary, final_red_flag)
 
     # Query execution
@@ -100,8 +100,7 @@ def insert_summary(patient_id, summary, final_red_flag):
     finally:
         cursor.close()
         connection.close()
-    
-        
+
 
 if __name__ == "__main__":
     connection = get_connection()
