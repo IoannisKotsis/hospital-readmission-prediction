@@ -74,6 +74,7 @@ class SummaryData(BaseModel):
 # API request
 @app.post("/predict")
 def predict(patient: PatientData):
+    """Predict 30-day readmission risk, generate an LLM summary, and store the result."""
 
     # Raw data -> dict -> dataframe
     raw_data = patient.model_dump()
@@ -120,6 +121,7 @@ def predict(patient: PatientData):
 
 @app.get("/risk/{patient_id}")
 def get_risk(patient_id: int):
+    """Return the stored readmission risk score for a patient, or 404 if not found."""
     score = get_risk_score(patient_id)
     if score is None:
         raise HTTPException(status_code=404, detail="Patient not found")
@@ -128,6 +130,7 @@ def get_risk(patient_id: int):
 
 @app.post("/summary")
 def save_summary(data: SummaryData):
+    """Store a post-discharge conversation summary for a patient."""
     try:
         insert_summary(data.patient_id, data.summary, data.final_red_flag)
     except Exception as e:
@@ -138,5 +141,6 @@ def save_summary(data: SummaryData):
 # HTML API
 @app.get("/", response_class=HTMLResponse)
 def home():
+    """Serve the landing page."""
     with open("index.html", "r") as f:
         return f.read()
